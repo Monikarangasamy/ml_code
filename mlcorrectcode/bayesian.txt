@@ -1,0 +1,28 @@
+import networkx as nx
+import matplotlib.pyplot as plt
+import pandas as pd
+
+# 1. Draw Bayesian Network
+G = nx.DiGraph()
+G.add_edges_from([('Age', 'HeartDisease'), ('BP', 'HeartDisease'),('sugar','HeartDisease')])
+nx.draw(G, with_labels=True, node_color='lightblue', node_size=2500, font_size=10)
+plt.title("Bayesian Network - Heart Disease")
+plt.show()
+
+# 2. Simulated Probabilities
+probs = pd.DataFrame({
+    'Age': ['young', 'old', 'old'],
+    'BP': ['normal', 'high', 'normal'],.
+    'P(HeartDisease=yes)': [0.2, 0.8, 0.5]
+})
+print("Simulated Conditional Probabilities:\n")
+print(probs)
+
+# 3. Predict based on inputs
+def predict(age, bp):
+    row = probs[(probs.Age == age) & (probs.BP == bp)]
+    if not row.empty:
+        return f"Chance of Heart Disease: {row.iloc[0]['P(HeartDisease=yes)'] * 100:.1f}%"
+    return "Unknown combination"
+
+print("\nPrediction:", predict('old', 'high'))
